@@ -1,3 +1,22 @@
+// Starter todo items
+const initialTodos = [
+  {
+    id: 1,
+    title: "Create Mockup",
+    completed: true,
+  },
+  {
+    id: 2,
+    title: "Create Static Layout",
+    completed: true,
+  },
+  {
+    id: 3,
+    title: "Add Interactivity",
+    completed: false,
+  },
+];
+
 export default function App() {
   return (
     <main>
