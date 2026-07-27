@@ -1,3 +1,5 @@
+import { useReducer } from "react";
+
 // Starter todo items
 const initialTodos = [
   {
@@ -17,7 +19,24 @@ const initialTodos = [
   },
 ];
 
+// Function for the reducer
+function todoReducer(todos, action) {
+  switch (action.type) {
+    case "toggle":
+      return todos.map((todo) =>
+        todo.id === action.id
+          ? { ...todo, completed: !todo.completed }
+          : todo,
+      );
+
+    default:
+      return todos;
+  }
+}
+
 export default function App() {
+  const [todos, dispatch] = useReducer(todoReducer, initialTodos);
+
   return (
     <main>
       <h1>Todo List</h1>
@@ -28,21 +47,24 @@ export default function App() {
       </div>
 
       <ul>
-        {initialTodos.map((todo) => (
+        {todos.map((todo) => (
           <li key={todo.id}>
             <input
               type="checkbox"
-              defaultChecked={todo.completed}
+              checked={todo.completed}
+              onChange={() =>
+                dispatch({
+                  type: "toggle",
+                  id: todo.id,
+                })
+              }
             />
 
             <span>{todo.title}</span>
 
             <button type="button">Edit</button>
 
-            <button
-              type="button"
-              disabled={!todo.completed}
-            >
+            <button type="button" disabled={!todo.completed}>
               Delete
             </button>
           </li>
