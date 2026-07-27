@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 
 // Starter todo items
 const initialTodos = [
@@ -22,6 +22,11 @@ const initialTodos = [
 // Function for the reducer
 function todoReducer(todos, action) {
   switch (action.type) {
+
+    case "add":
+      // Add the new todo to the array
+      return [action.todo, ...todos];
+
     case "toggle":
       return todos.map((todo) =>
         todo.id === action.id
@@ -37,14 +42,45 @@ function todoReducer(todos, action) {
 export default function App() {
   const [todos, dispatch] = useReducer(todoReducer, initialTodos);
 
+  // Stores the state into the todo
+  const [newTodo, setNewTodo] = useState("");
+
+  function handleSubmit(event) {
+    // Prevent the form from refreshing
+    event.preventDefault();
+
+    // Do not add an empty todo
+    if (newTodo.trim() === "") {
+      return;
+    }
+
+    dispatch({
+      type: "add",
+      todo: {
+        id: Date.now(),
+        title: newTodo.trim(),
+        completed: false,
+      },
+    });
+
+    // Clear the input after the todo is added
+    setNewTodo("");
+  }
+
   return (
     <main>
       <h1>Todo List</h1>
 
-      <div>
-        <input type="text" placeholder="Enter a new todo" />
-        <button type="button">Add Todo</button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter a new todo"
+          value={newTodo}
+          onChange={(event) => setNewTodo(event.target.value)}
+        />
+
+        <button type="submit">Add Todo</button>
+      </form>
 
       <ul>
         {todos.map((todo) => (
