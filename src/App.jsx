@@ -34,6 +34,10 @@ function todoReducer(todos, action) {
           : todo,
       );
 
+    case "delete":
+      // Remove the todo item from the list
+      return todos.filter((todo) => todo.id !== action.id);
+
     default:
       return todos;
   }
@@ -100,9 +104,16 @@ export default function App() {
 
             <button type="button">Edit</button>
 
-            <button type="button" disabled={!todo.completed}>
-              Delete
-            </button>
+            <button
+              type="button"
+              disabled={!todo.completed}
+              onClick={() =>
+                dispatch({
+                  type: "delete",
+                  id: todo.id,
+                })
+              }
+            >Delete</button>
           </li>
         ))}
       </ul>
