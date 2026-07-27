@@ -24,30 +24,29 @@ export default function App() {
 
       <div>
         <input type="text" placeholder="Enter a new todo" />
-        <button type="button">Add Task</button>
+        <button type="button">Add Todo</button>
       </div>
 
       <ul>
-        <li>
-          <input type="checkbox" />
-          <span>Create Mockup</span>
-          <button type="button">Edit</button>
-          <button type="button">Delete</button>
-        </li>
+        {initialTodos.map((todo) => (
+          <li key={todo.id}>
+            <input
+              type="checkbox"
+              defaultChecked={todo.completed}
+            />
 
-        <li>
-          <input type="checkbox" />
-          <span>Create Static Layout</span>
-          <button type="button">Edit</button>
-          <button type="button">Delete</button>
-        </li>
+            <span>{todo.title}</span>
 
-        <li>
-          <input type="checkbox" />
-          <span>Add Interactivity</span>
-          <button type="button">Edit</button>
-          <button type="button">Delete</button>
-        </li>
+            <button type="button">Edit</button>
+
+            <button
+              type="button"
+              disabled={!todo.completed}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
       </ul>
     </main>
   );
