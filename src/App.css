@@ -54,3 +54,13 @@ li {
 li span {
   flex: 1;
 }
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: lightgray;
+}
