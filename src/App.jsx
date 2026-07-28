@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import "./App.css";
 
 // Starter todo items
 const initialTodos = [
@@ -150,7 +151,7 @@ export default function App() {
               </>
             ) : (
               <>
-                <span>{todo.title}</span>
+                <span className={todo.completed ? "completed" : ""}>{todo.title}</span>
 
                 <button type="button" onClick={() => handleEdit(todo)}>Edit</button>
 
