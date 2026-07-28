@@ -22,3 +22,10 @@ form {
   gap: 10px;
   margin-bottom: 20px;
 }
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid lightslategray;
+  border-radius: 4px;
+}
