@@ -16,3 +16,9 @@ h1 {
   text-align: center;
   color: black;
 }
+
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
