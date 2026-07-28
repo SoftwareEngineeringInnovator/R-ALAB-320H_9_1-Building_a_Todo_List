@@ -3,3 +3,11 @@ body {
   font-family: Arial;
   background-color: lightgray;
 }
+
+main {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 50px;
+  background-color: white;
+  border-radius: 8px;
+}
