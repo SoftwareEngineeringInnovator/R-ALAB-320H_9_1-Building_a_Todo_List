@@ -42,3 +42,15 @@ ul {
   margin: 0;
   list-style: none;
 }
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px;
+  border-bottom: 2px solid lightblue;
+}
+
+li span {
+  flex: 1;
+}
