@@ -22,12 +22,12 @@ const initialTodos = [
 // Function for the reducer
 function todoReducer(todos, action) {
   switch (action.type) {
-
     case "add":
-      // Add the new todo to the array
+      // Add the new todo to the top of the array
       return [action.todo, ...todos];
 
     case "toggle":
+      // Change the completed value of the selected todo
       return todos.map((todo) =>
         todo.id === action.id
           ? { ...todo, completed: !todo.completed }
@@ -35,8 +35,16 @@ function todoReducer(todos, action) {
       );
 
     case "delete":
-      // Remove the todo item from the list
+      // Remove the selected todo from the list
       return todos.filter((todo) => todo.id !== action.id);
+
+    case "save":
+      // Update the title of the selected todo
+      return todos.map((todo) =>
+        todo.id === action.id
+          ? { ...todo, title: action.title }
+          : todo,
+      );
 
     default:
       return todos;
@@ -46,11 +54,17 @@ function todoReducer(todos, action) {
 export default function App() {
   const [todos, dispatch] = useReducer(todoReducer, initialTodos);
 
-  // Stores the state into the todo
+  // Stores the text typed into the new todo input
   const [newTodo, setNewTodo] = useState("");
 
+  // Stores the ID of the todo being edited
+  const [editingId, setEditingId] = useState(null);
+
+  // Stores the updated title while editing
+  const [editTitle, setEditTitle] = useState("");
+
   function handleSubmit(event) {
-    // Prevent the form from refreshing
+    // Prevent the form from refreshing the page
     event.preventDefault();
 
     // Do not add an empty todo
@@ -71,6 +85,31 @@ export default function App() {
     setNewTodo("");
   }
 
+  function handleEdit(todo) {
+    // Keep track of the todo being edited
+    setEditingId(todo.id);
+
+    // Place the current title inside the edit input
+    setEditTitle(todo.title);
+  }
+
+  function handleSave(id) {
+    // Do not save an empty todo title
+    if (editTitle.trim() === "") {
+      return;
+    }
+
+    dispatch({
+      type: "save",
+      id: id,
+      title: editTitle.trim(),
+    });
+
+    // Exit editing mode
+    setEditingId(null);
+    setEditTitle("");
+  }
+
   return (
     <main>
       <h1>Todo List</h1>
@@ -89,10 +128,7 @@ export default function App() {
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() =>
+            <input type="checkbox" checked={todo.completed} onChange={() =>
                 dispatch({
                   type: "toggle",
                   id: todo.id,
@@ -100,20 +136,33 @@ export default function App() {
               }
             />
 
-            <span>{todo.title}</span>
+            {editingId === todo.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(event) => setEditTitle(event.target.value)}/>
 
-            <button type="button">Edit</button>
+                <button
+                  type="button"
+                  onClick={() => handleSave(todo.id)}
+                >Save</button>
+              </>
+            ) : (
+              <>
+                <span>{todo.title}</span>
 
-            <button
-              type="button"
-              disabled={!todo.completed}
-              onClick={() =>
-                dispatch({
-                  type: "delete",
-                  id: todo.id,
-                })
-              }
-            >Delete</button>
+                <button type="button" onClick={() => handleEdit(todo)}>Edit</button>
+
+                <button type="button" disabled={!todo.completed} onClick={() =>
+                    dispatch({
+                      type: "delete",
+                      id: todo.id,
+                    })
+                  }
+                >Delete</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
